@@ -24,6 +24,7 @@
 
       <div v-if="tipoSelecionado === 'aluguel'" class="form-grid fade-in">
         <section class="card">
+          <i class="fi fi-rr-user"></i>
           <h3 class="remax-red">Dados do Locador</h3>
           <div class="fields-stack">
             <input v-model="form.nomeLocador" placeholder="Nome Completo" />
