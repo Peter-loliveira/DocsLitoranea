@@ -8,114 +8,97 @@ export const processarAluguel = async (dados) => {
     const response = await fetch("/modelo.docx");
     const content = await response.arrayBuffer();
     const zip = new PizZip(content);
+
     const doc = new Docxtemplater(zip, {
       paragraphLoop: true,
       linebreaks: true,
     });
 
-    // --- 1. TRATAMENTO DO VALOR (CORREÇÃO DE CENTAVOS E EXTENSO) ---
-    let valorBruto = String(dados.valorAluguel || "0");
-    
-    // Limpeza: remove R$, espaços e pontos de milhar, mantém a vírgula
-    let valorLimpo = valorBruto.replace("R$", "").replace(/\s/g, "").replace(/\./g, "");
-    // Conversão: troca vírgula por ponto para o JS entender decimais (evita deslocamento)
-    valorLimpo = valorLimpo.replace(",", ".");
+    // --- 1. TRATAMENTO DO VALOR (LIMPEZA ULTRA-RIGOROSA) ---
+    // Forçamos a conversão para string e removemos tudo que não for dígito ou vírgula
+    let valorEntrada = String(dados.valorAluguel || "0");
+    let apenasNumeros = valorEntrada.replace(/[^\d,]/g, "");
 
-    let valorNumerico = parseFloat(valorLimpo);
+    // Converte vírgula para ponto para o parseFloat
+    let valorParaCalculo = apenasNumeros.replace(",", ".");
+    let valorNumerico = parseFloat(valorParaCalculo);
+
     if (isNaN(valorNumerico)) valorNumerico = 0;
 
-    // Formatação para o Word (Padrão brasileiro: 1.200,50)
-    const valorFormatado = valorNumerico.toLocaleString('pt-BR', { 
-      minimumFractionDigits: 2, 
-      maximumFractionDigits: 2 
+    // Formatação para {ValorAluguel} (ex: 1.256,66)
+    const campoNumero = valorNumerico.toLocaleString('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
     });
 
-    // Geração do Extenso Seguro
-    let valorExtenso = "zero reais";
+    // --- 2. GERAÇÃO DO EXTENSO (MÉTODO DE COMPATIBILIDADE) ---
+    let campoExtenso = "";
     try {
       if (valorNumerico > 0) {
-        valorExtenso = extenso(valorNumerico.toFixed(2), { mode: 'currency' });
+        // Algumas versões da biblioteca preferem receber o número como String fixa
+        const stringParaBiblioteca = valorNumerico.toFixed(2);
+
+        // Tentativa 1: Modo Moeda Direto
+        let resultado = extenso(stringParaBiblioteca, { mode: 'currency' });
+
+        // Verificação: Se a biblioteca falhou e retornou o número de novo (seu erro atual)
+        if (!resultado || /\d/.test(resultado)) {
+            // Tentativa 2: Modo padrão + sufixo manual
+            const textoPuro = extenso(stringParaBiblioteca.replace('.', ','), { locale: 'br' });
+            resultado = textoPuro + " reais";
+        }
+
+        campoExtenso = resultado.charAt(0).toUpperCase() + resultado.slice(1);
+      } else {
+        campoExtenso = "Zero reais";
       }
     } catch (e) {
-      valorExtenso = valorFormatado + " reais";
+      console.error("Erro no processamento do extenso:", e);
+      campoExtenso = campoNumero + " reais";
     }
 
-    // --- 2. TRATAMENTO DE DATAS (INÍCIO E CÁLCULO DO FIM) ---
+    // --- 3. TRATAMENTO DE DATAS ---
+    let dataAssinaturaFormatada = "";
     let dataInicioFormatada = "";
     let dataFimFormatada = "";
 
-    if (dados.dataInicioLocacao) {
-      // Ajuste para evitar problemas de fuso horário no input date
-      const dataAux = new Date(dados.dataInicioLocacao + 'T12:00:00');
-      
-      // Data de Início (DD/MM/AAAA)
-      dataInicioFormatada = dataAux.toLocaleDateString('pt-BR');
-
-      // Cálculo da Data de Fim (Soma os meses definidos no campo prazoMeses)
-      const prazo = parseInt(dados.prazoMeses) || 0;
-      const dataFimObj = new Date(dataAux);
-      dataFimObj.setMonth(dataFimObj.getMonth() + prazo);
-      
-      dataFimFormatada = dataFimObj.toLocaleDateString('pt-BR');
+    if (dados.dataAssinatura) {
+      const d = new Date(dados.dataAssinatura + 'T12:00:00');
+      dataAssinaturaFormatada = d.toLocaleDateString('pt-BR');
     }
 
-    // --- 3. MAPEAMENTO FINAL DOS DADOS PARA O DOCX ---
-    doc.setData({
-      // Financeiro e Prazos
-      ValorAluguel: valorFormatado,
-      ValorAluguelExtenso: valorExtenso,
-      DataInicioLocacao: dataInicioFormatada,
-      DataFimLocacao: dataFimFormatada,
-      DiaMensalPagamentoAluguel: dados.diaPagamento || "",
-      
-      // Imóvel
-      tipoImovel: dados.tipoImovel || "Casa",
-      EnderecoImovel: dados.enderecoImovel || "",
-      DescricaoMobiliada: dados.descricaoMobiliada || "",
-      CotratoCoelba: dados.contratoCoelba || "",
-      CotratoEmbasa: dados.contratoEmbasa || "", // Campo sem espaço conforme solicitado
+    if (dados.dataInicioLocacao) {
+      const dInicio = new Date(dados.dataInicioLocacao + 'T12:00:00');
+      dataInicioFormatada = dInicio.toLocaleDateString('pt-BR');
+      const prazo = parseInt(dados.prazoMeses) || 0;
+      const dFim = new Date(dInicio);
+      dFim.setMonth(dFim.getMonth() + prazo);
+      dataFimFormatada = dFim.toLocaleDateString('pt-BR');
+    }
 
-      // Locador
-      NomeLocador: dados.nomeLocador || "",
-      NacionalizadeLocador: dados.nacionalidadeLocador || "",
-      EstadoCivilLocador: dados.estadoCivilLocador || "",
-      ProfissaoLocador: dados.profissaoLocador || "",
-      CPFLocador: dados.cpfLocador || "",
-      GRLocador: dados.rgLocador || "",
-      UfRgLocador: dados.ufRgLocador || "",
-      EnderecoLocador: dados.enderecoLocador || "",
-      telefoneLocador: dados.telefoneLocador || "",
-      "E-mailLocador": dados.emailLocador || "",
-
-      // Locatário
+    // --- 4. RENDERIZAÇÃO (MAPEAMENTO) ---
+    doc.render({
+      ValorAluguel: campoNumero,
+      ValorAluguelExtenso: campoExtenso,
       NomeLocatario: dados.nomeLocatario || "",
-      NacionalidadeLocatario: dados.nacionalidadeLocataria || "",
-      EstadoCivilLocatario: dados.estadoCivilLocataria || "",
-      ProfissaoLocatario: dados.profissaoLocataria || "",
-      CPFLocatario: dados.cpfLocatario || "",
-      RGLocatario: dados.rgLocataria || "",
-      UfRgLocatario: dados.ufRgLocataria || "",
-      EnderecoLocatario: dados.enderecoLocataria || "",
-      TelefoneLocatario: dados.telefoneLocataria || "",
-      "E-mailLocatario": dados.emailLocataria || "",
-
-      // Corretor (Usa CRECI em vez de CPF conforme última alteração)
-      NomeCorretor: dados.nomeCorretor || "",
-      CreciCorretor: dados.creciCorretor || "",
-      DataAssinaturaContrato: dados.dataAssinatura || ""
+      // Usamos operadores || "" para garantir que campos vazios não quebrem o Word
+      DiaMensalPagamentoAluguel: dados.diaPagamento || "",
+      DataInicioLocacao: dataInicioFormatada || "",
+      DataFimLocacao: dataFimFormatada || "",
+      EnderecoImovel: dados.enderecoImovel || "",
+      NomeLocador: dados.nomeLocador || "",
+      DataAssinaturaContrato: dataAssinaturaFormatada || ""
     });
 
-    // --- 4. RENDERIZAÇÃO E DOWNLOAD ---
-    doc.render();
     const out = doc.getZip().generate({
       type: "blob",
       mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     });
 
-    saveAs(out, `Contrato_Locacao_${dados.nomeLocatario || 'REMAX'}.docx`);
+    saveAs(out, `Contrato_${dados.nomeLocatario || 'REMAX'}.docx`);
 
   } catch (error) {
-    console.error("Erro detalhado na geração:", error);
-    alert("Erro ao gerar o documento. Verifique os dados inseridos.");
+    console.error("Erro detalhado:", error);
+    alert("Erro ao gerar contrato. Verifique o console.");
   }
 };

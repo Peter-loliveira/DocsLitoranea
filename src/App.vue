@@ -5,51 +5,59 @@
       <div class="header-content">
         <div class="brand-text">
           <span class="remax-red">RE/MAX</span> <span class="remax-blue">Litorânea</span>
-          <p class="subtitle">Gerador de Documentos Imobiliarios</p>
+          <p class="subtitle">Gerador de Documentos Imobiliários</p>
         </div>
       </div>
     </header>
 
     <main class="container">
       <section class="card selector-card">
-        <h3 class="remax-black">Selecione o Tipo de Contrato:</h3>
-        <select v-model="tipoSelecionado">
-          <option value="aluguel">Contrato de Aluguel</option>
-          <option value="representacao">Contrato de Representação</option>
-          <option value="compra_venda">Contrato de Compra e Venda</option>
-          <option value="aditivo_compra">Aditivo à Compra e Venda</option>
-          <option value="aditivo_aluguel">Aditivo ao Aluguel</option>
-        </select>
+        <div class="flex-row" style="align-items: flex-end;">
+          <div class="flex-2">
+            <label class="remax-black">Tipo de Contrato:</label>
+            <select v-model="tipoSelecionado">
+              <option value="aluguel">Contrato de Aluguel</option>
+              <option value="representacao">Contrato de Representação</option>
+              <option value="compra_venda">Contrato de Compra e Venda</option>
+              <option value="aditivo_compra">Aditivo à Compra e Venda</option>
+              <option value="aditivo_aluguel">Aditivo ao Aluguel</option>
+            </select>
+          </div>
+          <div class="flex-1">
+            <label class="remax-black">Data de Assinatura:</label>
+            <input type="date" v-model="form.dataAssinatura" />
+          </div>
+        </div>
       </section>
 
       <div v-if="tipoSelecionado === 'aluguel'" class="form-grid fade-in">
-
-          <section class="card full-width">
-          <!-- <h3 class="remax-blue">Dados Corretor</h3> -->
-          <h3 class="remax-black">Dados Corretor</h3>
+        <section class="card">
+          <h3 class="remax-black"><i class="fi fi-rr-briefcase"></i> Dados Corretor</h3>
           <div class="flex-row">
             <input v-model="form.nomeCorretor" placeholder="Nome do Corretor" class="flex-2" />
             <input v-model="form.cpfCorretor" placeholder="CPF do Corretor" class="flex-1" />
             <input v-model="form.creciCorretor" placeholder="CRECI/BA" class="flex-min" />
           </div>
-          <input
-            v-model="form.dataAssinatura"
-            placeholder="Local e Data (Ex: Camaçari/BA, 26 de Março de 2026)"
-            style="margin-top: 15px"
-          />
         </section>
 
         <section class="card">
-          <h3 class="remax-red"> <i class="fi fi-rr-user"></i> Dados do Locador</h3>
+          <h3 class="remax-red"><i class="fi fi-rr-user"></i> Dados do Locador</h3>
           <div class="fields-stack">
             <input v-model="form.nomeLocador" placeholder="Nome Completo" />
-            <input v-model="form.nacionalidadeLocador" placeholder="Nacionalidade" />
-            <input v-model="form.estadoCivilLocador" placeholder="Estado Civil" />
+            <div class="flex-row" style="margin-bottom: 12px;">
+              <input v-model="form.nacionalidadeLocador" placeholder="Nacionalidade" class="flex-1" />
+              <select v-model="form.estadoCivilLocador" class="flex-1">
+                <option value="" disabled selected>Estado Civil</option>
+                <option v-for="estado in estadosCivis" :key="estado" :value="estado">{{ estado }}</option>
+              </select>
+            </div>
             <input v-model="form.profissaoLocador" placeholder="Profissão" />
             <input v-model="form.cpfLocador" placeholder="CPF" />
-            <div class="input-row">
-              <input v-model="form.rgLocador" placeholder="RG" />
-              <input v-model="form.ufRgLocador" placeholder="UF" style="max-width: 60px" />
+            <div class="flex-row" style="margin-bottom: 12px;">
+              <input v-model="form.rgLocador" placeholder="RG" class="flex-2" />
+              <select v-model="form.ufRgLocador" class="flex-min">
+                <option v-for="uf in ufs" :key="uf" :value="uf">{{ uf }}</option>
+              </select>
             </div>
             <input v-model="form.enderecoLocador" placeholder="Endereço de Residência" />
             <input v-model="form.telefoneLocador" placeholder="Telefone" />
@@ -58,16 +66,23 @@
         </section>
 
         <section class="card">
-          <h3 class="remax-blue"> <i class="fi fi-rr-user"></i> Dados do Locatário</h3>
+          <h3 class="remax-blue"><i class="fi fi-rr-user"></i> Dados do Locatário</h3>
           <div class="fields-stack">
             <input v-model="form.nomeLocatario" placeholder="Nome Completo" />
-            <input v-model="form.nacionalidadeLocataria" placeholder="Nacionalidade" />
-            <input v-model="form.estadoCivilLocataria" placeholder="Estado Civil" />
+            <div class="flex-row" style="margin-bottom: 12px;">
+              <input v-model="form.nacionalidadeLocataria" placeholder="Nacionalidade" class="flex-1" />
+              <select v-model="form.estadoCivilLocataria" class="flex-1">
+                <option value="" disabled selected>Estado Civil</option>
+                <option v-for="estado in estadosCivis" :key="estado" :value="estado">{{ estado }}</option>
+              </select>
+            </div>
             <input v-model="form.profissaoLocataria" placeholder="Profissão" />
             <input v-model="form.cpfLocatario" placeholder="CPF" />
-            <div class="input-row">
-              <input v-model="form.rgLocataria" placeholder="RG" />
-              <input v-model="form.ufRgLocataria" placeholder="UF" style="max-width: 60px" />
+            <div class="flex-row" style="margin-bottom: 12px;">
+              <input v-model="form.rgLocataria" placeholder="RG" class="flex-2" />
+              <select v-model="form.ufRgLocataria" class="flex-min">
+                <option v-for="uf in ufs" :key="uf" :value="uf">{{ uf }}</option>
+              </select>
             </div>
             <input v-model="form.enderecoLocataria" placeholder="Endereço de Residência" />
             <input v-model="form.telefoneLocataria" placeholder="Telefone" />
@@ -75,8 +90,8 @@
           </div>
         </section>
 
-        <section class="card full-width">
-          <h3 class="remax-red"> <i class="fi fi-rr-home"></i> Dados do Imóvel e Financeiro</h3>
+        <section class="card">
+          <h3 class="remax-red"><i class="fi fi-rr-home"></i> Dados do Imóvel e Financeiro</h3>
           <div class="flex-row">
             <div class="flex-1">
               <label>Tipo de Imóvel</label>
@@ -104,30 +119,20 @@
             </div>
           </div>
 
-          <input
-            v-model="form.enderecoImovel"
-            placeholder="Endereço Completo do Imóvel Locado"
-            style="margin-top: 15px"
-          />
+          <input v-model="form.enderecoImovel" placeholder="Endereço Completo do Imóvel Locado"
+            style="margin-top: 15px" />
 
           <div class="flex-row" style="margin-top: 15px">
             <input v-model="form.contratoCoelba" placeholder="Nº Contrato COELBA" class="flex-1" />
             <input v-model="form.contratoEmbasa" placeholder="Nº Contrato EMBASA" class="flex-1" />
           </div>
 
-          <label style="display: block; margin-top: 15px"
-            >Descrição da Mobília / Estado do Imóvel</label
-          >
-          <textarea
-            v-model="form.descricaoMobiliada"
-            rows="3"
-            placeholder="Ex: Sofá 3 lugares, ar-condicionado na suíte..."
-          ></textarea>
+          <label style="display: block; margin-top: 15px">Descrição da Mobília / Estado do Imóvel</label>
+          <textarea v-model="form.descricaoMobiliada" rows="3"
+            placeholder="Ex: Sofá 3 lugares, ar-condicionado na suíte..."></textarea>
         </section>
 
-
-
-        <button class="btn-generate full-width" @click="handleGerar">
+        <button class="btn-generate" @click="handleGerar">
           GERAR CONTRATO COMPLETO (DOCX)
         </button>
       </div>
@@ -144,7 +149,6 @@
 </template>
 
 <script>
-// Importação do CSS e da Lógica Modular
 import './styles/remax.css'
 import { processarAluguel } from './logic/aluguel.js'
 
@@ -152,35 +156,31 @@ export default {
   name: 'App',
   data() {
     return {
-      tipoSelecionado: 'aluguel', // Padrão solicitado
+      tipoSelecionado: 'aluguel',
+      ufs: ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'],
+      estadosCivis: ['Solteiro(a)', 'Casado(a)', 'Separado(a) (judicialmente)', 'Divorciado(a)', 'Viúvo(a)', 'União Estável'],
       form: {
-        // Dados do Locador
         nomeLocador: '',
-        nacionalidadeLocador: '',
+        nacionalidadeLocador: 'Brasileiro(a)',
         estadoCivilLocador: '',
         profissaoLocador: '',
         cpfLocador: '',
         rgLocador: '',
-        ufRgLocador: '',
+        ufRgLocador: 'BA',
         enderecoLocador: '',
         telefoneLocador: '',
         emailLocador: '',
-
-        // Dados do Locatário
         nomeLocatario: '',
-        nacionalidadeLocataria: '',
+        nacionalidadeLocataria: 'Brasileiro(a)',
         estadoCivilLocataria: '',
         profissaoLocataria: '',
         cpfLocatario: '',
         rgLocataria: '',
-        ufRgLocataria: '',
+        ufRgLocataria: 'BA',
         enderecoLocataria: '',
         telefoneLocataria: '',
         emailLocataria: '',
-
-        // Imóvel e Financeiro
         tipoImovel: 'Casa',
-        dataInicioLocacao: '',
         dataInicioLocacao: '',
         prazoMeses: 30,
         valorAluguel: '',
@@ -189,8 +189,6 @@ export default {
         contratoEmbasa: '',
         descricaoMobiliada: '',
         enderecoImovel: '',
-
-        // Corretor e Assinatura
         nomeCorretor: '',
         cpfCorretor: '',
         creciCorretor: '',
@@ -200,12 +198,10 @@ export default {
   },
   methods: {
     async handleGerar() {
-      // Validação básica para evitar erros nas assinaturas e cálculos
       if (!this.form.nomeLocatario || this.form.valorAluguel === '') {
         alert('O Nome do Locatário e o Valor do Aluguel são campos obrigatórios.')
         return
       }
-
       try {
         await processarAluguel(this.form)
       } catch (error) {
