@@ -1,103 +1,217 @@
+/* Importação de fonte moderna */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+/* RESET ABSOLUTO */
+html, body, #app {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden; /* Evita barra de rolagem horizontal indesejada */
+}
+
 :root {
-    --remax-blue: #003da5;
-    --remax-red: #e11b22;
-    --background: #f8f9fa;
+  --remax-blue: #003da5;
+  --remax-red: #e11b22;
+  --remax-black: #2d3748;
+  --bg-color: #f4f7f9;
+  --card-bg: #ffffff;
+  --text-main: #2d3748;
+  --border-color: #e2e8f0;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+body {
+  background-color: var(--bg-color);
+  font-family: 'Inter', sans-serif;
+  color: var(--text-main);
+  margin: 0;
+  padding: 0;
 }
 
 .remax-wrapper {
-    background-color: var(--background);
-    min-height: 100vh;
-    font-family: sans-serif;
+  width: 100vw !important; /* Força a largura da janela de visualização */
+  max-width: 100vw !important;
+  margin: 0 !important;
+  padding: 20px !important;
+  box-sizing: border-box;
+  display: block; /* Garante que não se comporte como flex centralizado */
 }
 
+/* Header Estilizado */
 .remax-header {
-    background: white;
-    padding: 15px;
-    text-align: center;
-    border-bottom: 4px solid var(--remax-blue);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 100%;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  margin-bottom: 30px;
+  margin: 0 0 30px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 4px solid var(--remax-red);
+  box-sizing: border-box;
 }
 
 .remax-logo {
-    height: 70px;
-    margin-bottom: 10px;
+  height: 60px;
+  margin-right: 20px;
+}
+
+.brand-text {
+  text-align: left;
 }
 
 .brand-text span {
-    font-size: 1.5rem;
-    font-weight: 900;
-    text-transform: uppercase;
+  font-size: 1.8rem;
+  font-weight: 800;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 0 20px;
+.subtitle {
+  margin: 0;
+  color: #718096;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
+/* Estrutura de Cards (Estilo Vercel/Kohl) */
 .card {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+  width: 100%;      /* Força preenchimento total */
+  box-sizing: border-box;
+}
+
+.card:hover {
+  transform: translateY(-2px);
 }
 
 .form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+  display: flex;
+  flex-direction: column; /* Garante um abaixo do outro */
+  width: 100%;
 }
 
 .full-width {
-    grid-column: span 2;
+  grid-column: 1;
 }
 
+/* Títulos e Labels */
+h3 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  border-left: 4px solid;
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #4a5568;
+}
+
+/* Inputs e Selects */
 input,
-textarea,
-select {
-    width: 100%;
-    padding: 12px;
-    margin-top: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background-color: #f8fafc;
+  transition: all 0.2s;
+  box-sizing: border-box;
 }
 
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--remax-blue);
+  box-shadow: 0 0 0 3px rgba(0, 61, 165, 0.1);
+  background-color: white;
+}
+
+/* Layout de Linhas */
+.flex-row {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.flex-1 {
+  flex: 1;
+  min-width: 150px;
+}
+
+.flex-2 {
+  flex: 2;
+  min-width: 200px;
+}
+
+.flex-min {
+  flex: 0.5;
+  min-width: 80px;
+}
+
+.fields-stack input {
+  margin-bottom: 12px;
+}
+
+/* Botão de Geração */
 .btn-generate {
-    width: 100%;
-    padding: 20px;
-    background: var(--remax-blue);
-    color: white;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 5px;
+  background: linear-gradient(135deg, var(--remax-red) 0%, #b11318 100%);
+  color: white;
+  border: none;
+  padding: 18px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 10px 15px -3px rgba(225, 27, 34, 0.3);
+  transition: all 0.3s;
+  margin-top: 10px;
 }
 
 .btn-generate:hover {
-    background: var(--remax-red);
+  filter: brightness(1.1);
+  transform: scale(1.01);
+  box-shadow: 0 20px 25px -5px rgba(225, 27, 34, 0.4);
 }
 
-.unavailable-msg {
-    text-align: center;
-    padding: 50px;
-    color: var(--remax-red);
-    font-weight: bold;
+.remax-red {
+  color: var(--remax-red);
+  border-color: var(--remax-red);
 }
 
-/* Responsividade Tablet Paisagem e Desktop */
-@media (max-width: 1024px) {
-    .form-grid {
-        grid-template-columns: 1fr 1fr;
-    }
+.remax-blue {
+  color: var(--remax-blue);
+  border-color: var(--remax-blue);
 }
 
+.remax-black {
+  color: var(--remax-black);
+  border-color: var(--remax-black);
+}
+
+/* Mobile */
 @media (max-width: 768px) {
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .full-width {
-        grid-column: span 1;
-    }
+  .full-width {
+    grid-column: span 1;
+  }
 }

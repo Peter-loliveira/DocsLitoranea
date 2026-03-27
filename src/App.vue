@@ -12,19 +12,35 @@
 
     <main class="container">
       <section class="card selector-card">
-        <label>Selecione o Tipo de Documento:</label>
+        <h3 class="remax-black">Selecione o Tipo de Contrato:</h3>
         <select v-model="tipoSelecionado">
           <option value="aluguel">Contrato de Aluguel</option>
           <option value="representacao">Contrato de Representação</option>
           <option value="compra_venda">Contrato de Compra e Venda</option>
           <option value="aditivo_compra">Aditivo à Compra e Venda</option>
-          <option value="aditivo_aluguel">Aditivo à Aluguel</option>
+          <option value="aditivo_aluguel">Aditivo ao Aluguel</option>
         </select>
       </section>
 
       <div v-if="tipoSelecionado === 'aluguel'" class="form-grid fade-in">
+
+          <section class="card full-width">
+          <!-- <h3 class="remax-blue">Dados Corretor</h3> -->
+          <h3 class="remax-black">Dados Corretor</h3>
+          <div class="flex-row">
+            <input v-model="form.nomeCorretor" placeholder="Nome do Corretor" class="flex-2" />
+            <input v-model="form.cpfCorretor" placeholder="CPF do Corretor" class="flex-1" />
+            <input v-model="form.creciCorretor" placeholder="CRECI/BA" class="flex-min" />
+          </div>
+          <input
+            v-model="form.dataAssinatura"
+            placeholder="Local e Data (Ex: Camaçari/BA, 26 de Março de 2026)"
+            style="margin-top: 15px"
+          />
+        </section>
+
         <section class="card">
-          <h3 class="remax-red">Dados do Locador</h3>
+          <h3 class="remax-red"> <i class="fi fi-rr-user"></i> Dados do Locador</h3>
           <div class="fields-stack">
             <input v-model="form.nomeLocador" placeholder="Nome Completo" />
             <input v-model="form.nacionalidadeLocador" placeholder="Nacionalidade" />
@@ -42,7 +58,7 @@
         </section>
 
         <section class="card">
-          <h3 class="remax-blue">Dados do Locatário</h3>
+          <h3 class="remax-blue"> <i class="fi fi-rr-user"></i> Dados do Locatário</h3>
           <div class="fields-stack">
             <input v-model="form.nomeLocatario" placeholder="Nome Completo" />
             <input v-model="form.nacionalidadeLocataria" placeholder="Nacionalidade" />
@@ -60,7 +76,7 @@
         </section>
 
         <section class="card full-width">
-          <h3 class="remax-red">Dados do Imóvel e Financeiro</h3>
+          <h3 class="remax-red"> <i class="fi fi-rr-home"></i> Dados do Imóvel e Financeiro</h3>
           <div class="flex-row">
             <div class="flex-1">
               <label>Tipo de Imóvel</label>
@@ -109,19 +125,7 @@
           ></textarea>
         </section>
 
-        <section class="card full-width">
-          <h3 class="remax-blue">Dados Corretor</h3>
-          <div class="flex-row">
-            <input v-model="form.nomeCorretor" placeholder="Nome do Corretor" class="flex-2" />
-            <input v-model="form.cpfCorretor" placeholder="CPF do Corretor" class="flex-1" />
-            <input v-model="form.creciCorretor" placeholder="CRECI/BA" class="flex-min" />
-          </div>
-          <input
-            v-model="form.dataAssinatura"
-            placeholder="Local e Data (Ex: Camaçari/BA, 26 de Março de 2026)"
-            style="margin-top: 15px"
-          />
-        </section>
+
 
         <button class="btn-generate full-width" @click="handleGerar">
           GERAR CONTRATO COMPLETO (DOCX)
