@@ -1,9 +1,19 @@
 /* Importação de fonte moderna */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 
+/* RESET ABSOLUTO */
+html, body, #app {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden; /* Evita barra de rolagem horizontal indesejada */
+}
+
 :root {
   --remax-blue: #003da5;
   --remax-red: #e11b22;
+  --remax-black: #2d3748;
   --bg-color: #f4f7f9;
   --card-bg: #ffffff;
   --text-main: #2d3748;
@@ -20,22 +30,29 @@ body {
 }
 
 .remax-wrapper {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 20px;
+  width: 100vw !important; /* Força a largura da janela de visualização */
+  max-width: 100vw !important;
+  margin: 0 !important;
+  padding: 20px !important;
+  box-sizing: border-box;
+  display: block; /* Garante que não se comporte como flex centralizado */
 }
 
 /* Header Estilizado */
 .remax-header {
+  width: 100%;
+  max-width: 100%;
   background: white;
   padding: 20px;
   border-radius: 12px;
   box-shadow: var(--shadow);
   margin-bottom: 30px;
+  margin: 0 0 30px 0;
   display: flex;
   align-items: center;
   justify-content: center;
   border-bottom: 4px solid var(--remax-red);
+  box-sizing: border-box;
 }
 
 .remax-logo {
@@ -68,7 +85,8 @@ body {
   box-shadow: var(--shadow);
   margin-bottom: 20px;
   border: 1px solid var(--border-color);
-  transition: transform 0.2s ease;
+  width: 100%;      /* Força preenchimento total */
+  box-sizing: border-box;
 }
 
 .card:hover {
@@ -76,13 +94,13 @@ body {
 }
 
 .form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  display: flex;
+  flex-direction: column; /* Garante um abaixo do outro */
+  width: 100%;
 }
 
 .full-width {
-  grid-column: span 2;
+  grid-column: 1;
 }
 
 /* Títulos e Labels */
@@ -103,7 +121,9 @@ label {
 }
 
 /* Inputs e Selects */
-input, select, textarea {
+input,
+select,
+textarea {
   width: 100%;
   padding: 12px;
   border: 1px solid var(--border-color);
@@ -114,7 +134,9 @@ input, select, textarea {
   box-sizing: border-box;
 }
 
-input:focus, select:focus, textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
   outline: none;
   border-color: var(--remax-blue);
   box-shadow: 0 0 0 3px rgba(0, 61, 165, 0.1);
@@ -128,9 +150,20 @@ input:focus, select:focus, textarea:focus {
   flex-wrap: wrap;
 }
 
-.flex-1 { flex: 1; min-width: 150px; }
-.flex-2 { flex: 2; min-width: 200px; }
-.flex-min { flex: 0.5; min-width: 80px; }
+.flex-1 {
+  flex: 1;
+  min-width: 150px;
+}
+
+.flex-2 {
+  flex: 2;
+  min-width: 200px;
+}
+
+.flex-min {
+  flex: 0.5;
+  min-width: 80px;
+}
 
 .fields-stack input {
   margin-bottom: 12px;
@@ -157,11 +190,28 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 20px 25px -5px rgba(225, 27, 34, 0.4);
 }
 
-.remax-red { color: var(--remax-red); border-color: var(--remax-red); }
-.remax-blue { color: var(--remax-blue); border-color: var(--remax-blue); }
+.remax-red {
+  color: var(--remax-red);
+  border-color: var(--remax-red);
+}
+
+.remax-blue {
+  color: var(--remax-blue);
+  border-color: var(--remax-blue);
+}
+
+.remax-black {
+  color: var(--remax-black);
+  border-color: var(--remax-black);
+}
 
 /* Mobile */
 @media (max-width: 768px) {
-  .form-grid { grid-template-columns: 1fr; }
-  .full-width { grid-column: span 1; }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: span 1;
+  }
 }
