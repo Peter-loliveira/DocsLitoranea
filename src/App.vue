@@ -1,11 +1,11 @@
 <template>
   <div class="remax-wrapper">
     <header class="remax-header">
+      <img src="/img/LogoBalao.png" alt="RE/MAX" class="remax-logo" />
       <div class="header-content">
-        <img src="/img/LogoBalao.png" alt="RE/MAX" class="remax-logo" />
         <div class="brand-text">
           <span class="remax-red">RE/MAX</span> <span class="remax-blue">Litorânea</span>
-          <p class="subtitle">Gerador de Documentos Jurídicos</p>
+          <p class="subtitle">Gerador de Documentos Imobiliarios</p>
         </div>
       </div>
     </header>
