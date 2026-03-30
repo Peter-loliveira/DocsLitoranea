@@ -1,47 +1,65 @@
-📝 Gerador de Documentos Imobiliários - RE/MAX Litorânea
-Este sistema é uma ferramenta interna desenvolvida para automatizar a criação de contratos de locação e documentos imobiliários. O objetivo é reduzir erros de digitação, padronizar a identidade visual da unidade e agilizar o dia a dia dos corretores.
+# 📑 Gerador de Documentos RE/MAX Litorânea
 
-🚀 Funcionalidades Principais
-Automação de Valores por Extenso: Sistema inteligente que converte valores numéricos em texto (Reais e Centavos) de forma automática e precisa.
+> Sistema inteligente para automação de contratos e documentos imobiliários, focado em precisão jurídica e agilidade operacional.
 
-Seleção de Corretores: Banco de dados integrado com nome e CRECI dos corretores da unidade, ordenados alfabeticamente.
+---
 
-Garantia Locatícia Dinâmica: Alternância entre Seguro Locatício e Caução com um clique:
+## 🛠️ Funções do Sistema
 
-Cálculo automático do valor total da caução (Aluguel × Meses).
+### 1. Inteligência Financeira
 
-Geração de parágrafos jurídicos específicos para cada modalidade.
+- **Conversão Automática por Extenso:** Transforma valores numéricos em texto completo (reais e centavos) sem erros de digitação.
+- **Cálculo de Caução:** Multiplica o valor do aluguel pelo número de meses selecionado, gerando o montante total e seu respectivo extenso.
+- **Formatação de Moeda:** Aplica automaticamente a máscara de milhar e centavos no padrão brasileiro (R$ #.###,##).
 
-Cálculo de Datas: Define automaticamente a data de término do contrato com base no prazo de meses informado.
+### 2. Gestão de Garantias (Cláusula 3.4)
 
-Preenchimento em Lote: Mapeia mais de 30 campos entre Locador, Locatário, Imóvel e Financeiro diretamente para um modelo .docx.
+- **Seguro Locatício:** Gera automaticamente o texto jurídico padrão para exigência de seguradora.
+- **Caução:** Gera o texto específico citando o valor total, a equivalência em meses e o embasamento na Lei do Inquilinato.
 
-🛠️ Tecnologias Utilizadas
-Vue.js 3: Framework para uma interface reativa e rápida.
+### 3. Automação de Corretores
 
-Docxtemplater: Motor para manipulação e preenchimento de arquivos Word.
+- **Banco de Dados Integrado:** Lista suspensa com nomes e CRECI dos corretores da unidade.
+- **Ordenação Alfabética:** Organização automática para facilitar a seleção.
 
-PizZip: Manipulação de arquivos compactados (essencial para arquivos .docx).
+### 4. Processamento de Datas
 
-File-saver: Gerenciamento de downloads no navegador.
+- **Datas Inteligentes:** Formatação automática para o padrão brasileiro (DD/MM/AAAA).
+- **Cálculo de Vigência:** Calcula a data final do contrato baseando-se na data de início e no prazo em meses.
 
-Extenso.js: Biblioteca base para conversão de números em texto.
+---
 
-📂 Estrutura de Arquivos Críticos
-App.vue: Contém a interface do usuário, a lista de corretores e o estado do formulário.
+## 📖 Como Utilizar
 
-aluguel.js: O "cérebro" do sistema. Processa a limpeza de dados, cálculos financeiros, lógica de garantia e renderização do arquivo final.
+1. **Configuração Inicial**
+   - Selecione o **Tipo de Contrato** desejado no menu superior.
+   - Escolha o **Corretor Responsável** para que o CRECI seja preenchido automaticamente.
+   - Defina a **Data de Assinatura**.
 
-/public/modelo.docx: O arquivo de template que deve conter as tags entre chaves, ex: {NomeLocatario}, {ValorAluguel}, {TextoSeguro}.
+2. **Preenchimento de Dados**
+   - Insira os dados do **Locador** (Proprietário) e do **Locatário** (Inquilino).
+   - Informe os detalhes do **Imóvel** e as informações de contas de consumo (Coelba/Embasa).
 
-📋 Como usar
-Selecione o Corretor: Os dados de CRECI serão preenchidos automaticamente.
+3. **Definição da Garantia**
+   - Escolha entre os botões `SEGURO LOCATÍCIO` ou `CAUÇÃO`.
+   - Caso selecione **Caução**, informe a quantidade de meses no campo que aparecerá abaixo.
 
-Preencha os Dados: Insira as informações do locador, locatário e imóvel.
+4. **Geração do Arquivo**
+   - Clique no botão **Gerar Documento**.
+   - O sistema processará as informações e iniciará o download de um arquivo `.docx`.
+   - O texto inserido na cláusula de garantia será formatado automaticamente em **Calibri, tamanho 10**.
 
-Defina a Garantia: Escolha entre Seguro ou Caução. Se escolher Caução, informe o número de meses.
+---
 
-Gere o Documento: Clique em gerar para baixar o arquivo .docx já formatado em Calibri 10.
+## 📋 Tags de Template (Word)
 
-⚠️ Observações de Manutenção
-Ao editar o arquivo modelo.docx, certifique-se de que as tags no Word correspondam exatamente às chaves definidas no objeto doc.render dentro do arquivo aluguel.js. O sistema diferencia maiúsculas de minúsculas.
+Para o correto funcionamento, o arquivo `modelo.docx` deve conter as seguintes tags principais:
+
+- `{ValorAluguel}` e `{ValorAluguelExtenso}`
+- `{TextoSeguro}` (Para a cláusula de garantia dinâmica)
+- `{NomeCorretor}` e `{CreciCorretor}`
+- `{DataInicioLocacao}` e `{DataFimLocacao}`
+
+---
+
+_Desenvolvido para uso exclusivo da RE/MAX Litorânea._
