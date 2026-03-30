@@ -230,3 +230,26 @@ textarea:focus {
     grid-column: span 1;
   }
 }
+.btn-garantia {
+  padding: 10px 20px;
+  border: 2px solid #ccc;
+  background: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  border-radius: 4px;
+}
+
+.active-seguro {
+  border-color: #003594;
+  /* Azul RE/MAX */
+  background-color: #003594;
+  color: white;
+}
+
+.active-caucao {
+  border-color: #E11B22;
+  /* Vermelho RE/MAX */
+  background-color: #E11B22;
+  color: white;
+}

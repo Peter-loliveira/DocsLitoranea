@@ -106,6 +106,36 @@
 
         <section class="card">
           <h3 class="remax-red"><i class="fi fi-rr-home"></i> Dados do Imóvel e Financeiro</h3>
+          <div class="card">
+            <label class="remax-black">Forma de Garantia:</label>
+            <div class="flex-row" style="gap: 10px; margin-bottom: 15px">
+              <button
+                type="button"
+                :class="['btn-garantia', form.tipoGarantia === 'seguro' ? 'active-seguro' : '']"
+                @click="form.tipoGarantia = 'seguro'"
+              >
+                SEGURO LOCATÍCIO
+              </button>
+              <button
+                type="button"
+                :class="['btn-garantia', form.tipoGarantia === 'caucao' ? 'active-caucao' : '']"
+                @click="form.tipoGarantia = 'caucao'"
+              >
+                CAUÇÃO
+              </button>
+            </div>
+
+            <div
+              v-if="form.tipoGarantia === 'caucao'"
+              class="flex-row animate-fade-in"
+              style="margin-top: 10px"
+            >
+              <div style="width: 150px">
+                <label>Meses de Aluguel</label>
+                <input type="number" v-model="form.mesesCaucao" min="1" max="3" />
+              </div>
+            </div>
+          </div>
           <div class="flex-row">
             <div class="flex-1">
               <label>Tipo de Imóvel</label>
@@ -115,6 +145,7 @@
                 <option value="Ponto Comercial">Ponto Comercial</option>
               </select>
             </div>
+
             <div class="flex-1">
               <label>Início da Locação</label>
               <input type="date" v-model="form.dataInicioLocacao" />
@@ -256,6 +287,8 @@ export default {
         nomeCorretor: '',
         creciCorretor: '',
         cpfCorretor: '',
+        tipoGarantia: 'seguro', // Valor padrão
+        mesesCaucao: 3, // Valor padrão sugerido
       },
     }
   },
