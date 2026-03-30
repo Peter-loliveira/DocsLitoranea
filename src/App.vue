@@ -17,12 +17,19 @@
             <label class="remax-black">Tipo de Contrato:</label>
             <select v-model="tipoSelecionado">
               <option value="aluguel">Contrato de Aluguel</option>
-              <option value="representacao">Contrato de Representação</option>
-              <option value="compra_venda">Contrato de Compra e Venda</option>
-              <option value="aditivo_compra">Aditivo à Compra e Venda</option>
-              <option value="aditivo_aluguel">Aditivo ao Aluguel</option>
             </select>
           </div>
+
+          <div class="flex-2">
+            <label class="remax-black">Corretor Responsável:</label>
+            <select v-model="corretorSelecionado" @change="atualizarDadosCorretor">
+              <option :value="null" disabled>Selecione o Corretor</option>
+              <option v-for="corretor in corretores" :key="corretor.creci" :value="corretor">
+                {{ corretor.nome }}
+              </option>
+            </select>
+          </div>
+
           <div class="flex-1">
             <label class="remax-black">Data de Assinatura:</label>
             <input type="date" v-model="form.dataAssinatura" />
@@ -31,15 +38,6 @@
       </section>
 
       <div v-if="tipoSelecionado === 'aluguel'" class="form-grid fade-in">
-        <section class="card">
-          <h3 class="remax-black"><i class="fi fi-rr-briefcase"></i> Dados Corretor</h3>
-          <div class="flex-row">
-            <input v-model="form.nomeCorretor" placeholder="Nome do Corretor" class="flex-2" />
-            <input v-model="form.cpfCorretor" placeholder="CPF do Corretor" class="flex-1" />
-            <input v-model="form.creciCorretor" placeholder="CRECI/BA" class="flex-min" />
-          </div>
-        </section>
-
         <section class="card">
           <h3 class="remax-red"><i class="fi fi-rr-user"></i> Dados do Locador</h3>
           <div class="fields-stack">
@@ -175,6 +173,14 @@ export default {
   data() {
     return {
       tipoSelecionado: 'aluguel',
+      corretorSelecionado: null, // Novo estado para o seletor
+      corretores: [
+        { nome: 'Peter Lange Oliveira', creci: '31687', cpf: 'xxx.xxx.xxx-xx' },
+        { nome: 'Alan Souza da Silva', creci: '35223', cpf: 'xxx.xxx.xxx-xx' },
+        { nome: 'Victor Augusto Dos Santos Soares', creci: '8905', cpf: 'xxx.xxx.xxx-xx' },
+        { nome: 'Luciano Braz dos Santos Rodrigues', creci: '11343', cpf: 'xxx.xxx.xxx-xx' },
+        { nome: 'Chimeny Santos Chiacchiaretta', creci: '23278', cpf: 'xxx.xxx.xxx-xx' },
+      ].sort((a, b) => a.nome.localeCompare(b.nome)), // Ordenação alfabética automática
       ufs: [
         'AC',
         'AL',
@@ -242,14 +248,23 @@ export default {
         contratoEmbasa: '',
         descricaoMobiliada: '',
         enderecoImovel: '',
-        nomeCorretor: '',
-        cpfCorretor: '',
-        creciCorretor: '',
         dataAssinatura: '',
+        nomeCorretor: '',
+        creciCorretor: '',
+        cpfCorretor: '',
       },
     }
   },
   methods: {
+    // Nova função para atualizar o formulário ao selecionar o corretor
+    atualizarDadosCorretor() {
+      if (this.corretorSelecionado) {
+        this.form.nomeCorretor = this.corretorSelecionado.nome
+        this.form.creciCorretor = this.corretorSelecionado.creci
+        this.form.cpfCorretor = this.corretorSelecionado.cpf
+      }
+    },
+
     async handleGerar() {
       if (!this.form.nomeLocatario || this.form.valorAluguel === '') {
         alert('O Nome do Locatário e o Valor do Aluguel são campos obrigatórios.')

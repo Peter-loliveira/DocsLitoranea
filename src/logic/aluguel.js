@@ -43,9 +43,9 @@ export const processarAluguel = async (dados) => {
 
         // Verificação: Se a biblioteca falhou e retornou o número de novo (seu erro atual)
         if (!resultado || /\d/.test(resultado)) {
-            // Tentativa 2: Modo padrão + sufixo manual
-            const textoPuro = extenso(stringParaBiblioteca.replace('.', ','), { locale: 'br' });
-            resultado = textoPuro + " reais";
+          // Tentativa 2: Modo padrão + sufixo manual
+          const textoPuro = extenso(stringParaBiblioteca.replace('.', ','), { locale: 'br' });
+          resultado = textoPuro + " reais";
         }
 
         campoExtenso = resultado.charAt(0).toUpperCase() + resultado.slice(1);
@@ -76,17 +76,51 @@ export const processarAluguel = async (dados) => {
       dataFimFormatada = dFim.toLocaleDateString('pt-BR');
     }
 
-    // --- 4. RENDERIZAÇÃO (MAPEAMENTO) ---
+    // --- 4. RENDERIZAÇÃO (MAPEAMENTO COMPLETO) ---
     doc.render({
+      // Financeiro e Prazos
       ValorAluguel: campoNumero,
       ValorAluguelExtenso: campoExtenso,
-      NomeLocatario: dados.nomeLocatario || "",
-      // Usamos operadores || "" para garantir que campos vazios não quebrem o Word
       DiaMensalPagamentoAluguel: dados.diaPagamento || "",
       DataInicioLocacao: dataInicioFormatada || "",
       DataFimLocacao: dataFimFormatada || "",
+      PrazoMeses: dados.prazoMeses || "",
+
+      // Imóvel
+      tipoImovel: dados.tipoImovel || "Casa",
       EnderecoImovel: dados.enderecoImovel || "",
+      DescricaoMobiliada: dados.descricaoMobiliada || "",
+      CotratoCoelba: dados.contratoCoelba || "",
+      CotratoEmbasa: dados.contratoEmbasa || "",
+
+      // Locador
       NomeLocador: dados.nomeLocador || "",
+      NacionalizadeLocador: dados.nacionalidadeLocador || "",
+      EstadoCivilLocador: dados.estadoCivilLocador || "",
+      ProfissaoLocador: dados.profissaoLocador || "",
+      CPFLocador: dados.cpfLocador || "",
+      GRLocador: dados.rgLocador || "", // Verifique se no Word é {GRLocador} ou {RGLocador}
+      UfRgLocador: dados.ufRgLocador || "",
+      EnderecoLocador: dados.enderecoLocador || "",
+      telefoneLocador: dados.telefoneLocador || "",
+      "E-mailLocador": dados.emailLocador || "",
+
+      // Locatário
+      NomeLocatario: dados.nomeLocatario || "",
+      NacionalidadeLocatario: dados.nacionalidadeLocataria || "",
+      EstadoCivilLocatario: dados.estadoCivilLocataria || "",
+      ProfissaoLocatario: dados.profissaoLocataria || "",
+      CPFLocatario: dados.cpfLocatario || "",
+      RGLocatario: dados.rgLocataria || "",
+      UfRgLocatario: dados.ufRgLocataria || "",
+      EnderecoLocatario: dados.enderecoLocataria || "",
+      TelefoneLocatario: dados.telefoneLocataria || "",
+      "E-mailLocatario": dados.emailLocataria || "",
+
+      // Corretor e Assinatura
+      NomeCorretor: dados.nomeCorretor || "",
+      CreciCorretor: dados.creciCorretor || "",
+      CPFCorretor: dados.cpfCorretor || "",
       DataAssinaturaContrato: dataAssinaturaFormatada || ""
     });
 
