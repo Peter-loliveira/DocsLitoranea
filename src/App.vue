@@ -12,7 +12,7 @@
 
     <main class="container">
       <section class="card selector-card">
-        <div class="flex-row" style="align-items: flex-end;">
+        <div class="flex-row" style="align-items: flex-end">
           <div class="flex-2">
             <label class="remax-black">Tipo de Contrato:</label>
             <select v-model="tipoSelecionado">
@@ -44,16 +44,22 @@
           <h3 class="remax-red"><i class="fi fi-rr-user"></i> Dados do Locador</h3>
           <div class="fields-stack">
             <input v-model="form.nomeLocador" placeholder="Nome Completo" />
-            <div class="flex-row" style="margin-bottom: 12px;">
-              <input v-model="form.nacionalidadeLocador" placeholder="Nacionalidade" class="flex-1" />
+            <div class="flex-row" style="margin-bottom: 12px">
+              <input
+                v-model="form.nacionalidadeLocador"
+                placeholder="Nacionalidade"
+                class="flex-1"
+              />
               <select v-model="form.estadoCivilLocador" class="flex-1">
                 <option value="" disabled selected>Estado Civil</option>
-                <option v-for="estado in estadosCivis" :key="estado" :value="estado">{{ estado }}</option>
+                <option v-for="estado in estadosCivis" :key="estado" :value="estado">
+                  {{ estado }}
+                </option>
               </select>
             </div>
             <input v-model="form.profissaoLocador" placeholder="Profissão" />
             <input v-model="form.cpfLocador" placeholder="CPF" />
-            <div class="flex-row" style="margin-bottom: 12px;">
+            <div class="flex-row" style="margin-bottom: 12px">
               <input v-model="form.rgLocador" placeholder="RG" class="flex-2" />
               <select v-model="form.ufRgLocador" class="flex-min">
                 <option v-for="uf in ufs" :key="uf" :value="uf">{{ uf }}</option>
@@ -69,16 +75,22 @@
           <h3 class="remax-blue"><i class="fi fi-rr-user"></i> Dados do Locatário</h3>
           <div class="fields-stack">
             <input v-model="form.nomeLocatario" placeholder="Nome Completo" />
-            <div class="flex-row" style="margin-bottom: 12px;">
-              <input v-model="form.nacionalidadeLocataria" placeholder="Nacionalidade" class="flex-1" />
+            <div class="flex-row" style="margin-bottom: 12px">
+              <input
+                v-model="form.nacionalidadeLocataria"
+                placeholder="Nacionalidade"
+                class="flex-1"
+              />
               <select v-model="form.estadoCivilLocataria" class="flex-1">
                 <option value="" disabled selected>Estado Civil</option>
-                <option v-for="estado in estadosCivis" :key="estado" :value="estado">{{ estado }}</option>
+                <option v-for="estado in estadosCivis" :key="estado" :value="estado">
+                  {{ estado }}
+                </option>
               </select>
             </div>
             <input v-model="form.profissaoLocataria" placeholder="Profissão" />
             <input v-model="form.cpfLocatario" placeholder="CPF" />
-            <div class="flex-row" style="margin-bottom: 12px;">
+            <div class="flex-row" style="margin-bottom: 12px">
               <input v-model="form.rgLocataria" placeholder="RG" class="flex-2" />
               <select v-model="form.ufRgLocataria" class="flex-min">
                 <option v-for="uf in ufs" :key="uf" :value="uf">{{ uf }}</option>
@@ -119,22 +131,28 @@
             </div>
           </div>
 
-          <input v-model="form.enderecoImovel" placeholder="Endereço Completo do Imóvel Locado"
-            style="margin-top: 15px" />
+          <input
+            v-model="form.enderecoImovel"
+            placeholder="Endereço Completo do Imóvel Locado"
+            style="margin-top: 15px"
+          />
 
           <div class="flex-row" style="margin-top: 15px">
             <input v-model="form.contratoCoelba" placeholder="Nº Contrato COELBA" class="flex-1" />
             <input v-model="form.contratoEmbasa" placeholder="Nº Contrato EMBASA" class="flex-1" />
           </div>
 
-          <label style="display: block; margin-top: 15px">Descrição da Mobília / Estado do Imóvel</label>
-          <textarea v-model="form.descricaoMobiliada" rows="3"
-            placeholder="Ex: Sofá 3 lugares, ar-condicionado na suíte..."></textarea>
+          <label style="display: block; margin-top: 15px"
+            >Descrição da Mobília / Estado do Imóvel</label
+          >
+          <textarea
+            v-model="form.descricaoMobiliada"
+            rows="3"
+            placeholder="Ex: Sofá 3 lugares, ar-condicionado na suíte..."
+          ></textarea>
         </section>
 
-        <button class="btn-generate" @click="handleGerar">
-          GERAR CONTRATO COMPLETO (DOCX)
-        </button>
+        <button class="btn-generate" @click="handleGerar">GERAR CONTRATO COMPLETO (DOCX)</button>
       </div>
 
       <div v-else class="card unavailable-msg">
@@ -157,8 +175,43 @@ export default {
   data() {
     return {
       tipoSelecionado: 'aluguel',
-      ufs: ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'],
-      estadosCivis: ['Solteiro(a)', 'Casado(a)', 'Separado(a) (judicialmente)', 'Divorciado(a)', 'Viúvo(a)', 'União Estável'],
+      ufs: [
+        'AC',
+        'AL',
+        'AP',
+        'AM',
+        'BA',
+        'CE',
+        'DF',
+        'ES',
+        'GO',
+        'MA',
+        'MT',
+        'MS',
+        'MG',
+        'PA',
+        'PB',
+        'PR',
+        'PE',
+        'PI',
+        'RJ',
+        'RN',
+        'RS',
+        'RO',
+        'RR',
+        'SC',
+        'SP',
+        'SE',
+        'TO',
+      ],
+      estadosCivis: [
+        'Solteiro(a)',
+        'Casado(a)',
+        'Separado(a) (judicialmente)',
+        'Divorciado(a)',
+        'Viúvo(a)',
+        'União Estável',
+      ],
       form: {
         nomeLocador: '',
         nacionalidadeLocador: 'Brasileiro(a)',
