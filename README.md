@@ -1,44 +1,47 @@
-# DocsLitoranea
+📝 Gerador de Documentos Imobiliários - RE/MAX Litorânea
+Este sistema é uma ferramenta interna desenvolvida para automatizar a criação de contratos de locação e documentos imobiliários. O objetivo é reduzir erros de digitação, padronizar a identidade visual da unidade e agilizar o dia a dia dos corretores.
 
-This template should help get you started developing with Vue 3 in Vite.
+🚀 Funcionalidades Principais
+Automação de Valores por Extenso: Sistema inteligente que converte valores numéricos em texto (Reais e Centavos) de forma automática e precisa.
 
-## Recommended IDE Setup
+Seleção de Corretores: Banco de dados integrado com nome e CRECI dos corretores da unidade, ordenados alfabeticamente.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Garantia Locatícia Dinâmica: Alternância entre Seguro Locatício e Caução com um clique:
 
-## Recommended Browser Setup
+Cálculo automático do valor total da caução (Aluguel × Meses).
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+Geração de parágrafos jurídicos específicos para cada modalidade.
 
-## Customize configuration
+Cálculo de Datas: Define automaticamente a data de término do contrato com base no prazo de meses informado.
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+Preenchimento em Lote: Mapeia mais de 30 campos entre Locador, Locatário, Imóvel e Financeiro diretamente para um modelo .docx.
 
-## Project Setup
+🛠️ Tecnologias Utilizadas
+Vue.js 3: Framework para uma interface reativa e rápida.
 
-```sh
-npm install
-```
+Docxtemplater: Motor para manipulação e preenchimento de arquivos Word.
 
-### Compile and Hot-Reload for Development
+PizZip: Manipulação de arquivos compactados (essencial para arquivos .docx).
 
-```sh
-npm run dev
-```
+File-saver: Gerenciamento de downloads no navegador.
 
-### Compile and Minify for Production
+Extenso.js: Biblioteca base para conversão de números em texto.
 
-```sh
-npm run build
-```
+📂 Estrutura de Arquivos Críticos
+App.vue: Contém a interface do usuário, a lista de corretores e o estado do formulário.
 
-### Lint with [ESLint](https://eslint.org/)
+aluguel.js: O "cérebro" do sistema. Processa a limpeza de dados, cálculos financeiros, lógica de garantia e renderização do arquivo final.
 
-```sh
-npm run lint
-```
+/public/modelo.docx: O arquivo de template que deve conter as tags entre chaves, ex: {NomeLocatario}, {ValorAluguel}, {TextoSeguro}.
+
+📋 Como usar
+Selecione o Corretor: Os dados de CRECI serão preenchidos automaticamente.
+
+Preencha os Dados: Insira as informações do locador, locatário e imóvel.
+
+Defina a Garantia: Escolha entre Seguro ou Caução. Se escolher Caução, informe o número de meses.
+
+Gere o Documento: Clique em gerar para baixar o arquivo .docx já formatado em Calibri 10.
+
+⚠️ Observações de Manutenção
+Ao editar o arquivo modelo.docx, certifique-se de que as tags no Word correspondam exatamente às chaves definidas no objeto doc.render dentro do arquivo aluguel.js. O sistema diferencia maiúsculas de minúsculas.
