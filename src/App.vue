@@ -17,6 +17,10 @@
             <label class="remax-black">Tipo de Contrato:</label>
             <select v-model="tipoSelecionado">
               <option value="aluguel">Contrato de Aluguel</option>
+              <option value="representacao">Contrato de Representação</option>
+              <option value="compra_venda">Contrato de Compra e Venda</option>
+              <option value="aditivo_compra">Aditivo à Compra e Venda</option>
+              <option value="aditivo_aluguel">Aditivo ao Aluguel</option>
             </select>
           </div>
 
