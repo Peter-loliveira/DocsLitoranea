@@ -35,25 +35,28 @@ export const processarAluguel = async (dados) => {
     let campoExtenso = "";
     try {
       if (valorNumerico > 0) {
-        // Algumas versões da biblioteca preferem receber o número como String fixa
-        const stringParaBiblioteca = valorNumerico.toFixed(2);
+        // 1. Separamos a parte inteira e a decimal manualmente
+        const partes = valorNumerico.toFixed(2).split(".");
+        const inteiros = parseInt(partes[0]);
+        const centavos = parseInt(partes[1]);
 
-        // Tentativa 1: Modo Moeda Direto
-        let resultado = extenso(stringParaBiblioteca, { mode: 'currency' });
+        // 2. Pegamos o extenso de cada parte separadamente (sem modo currency)
+        const textoInteiro = extenso(inteiros);
+        const textoCentavos = centavos > 0 ? extenso(centavos) : "";
 
-        // Verificação: Se a biblioteca falhou e retornou o número de novo (seu erro atual)
-        if (!resultado || /\d/.test(resultado)) {
-          // Tentativa 2: Modo padrão + sufixo manual
-          const textoPuro = extenso(stringParaBiblioteca.replace('.', ','), { locale: 'br' });
-          resultado = textoPuro + " reais";
+        // 3. Montamos a frase manualmente para evitar erros da biblioteca
+        let resultado = textoInteiro + (inteiros === 1 ? " real" : " reais");
+
+        if (centavos > 0) {
+          resultado += " e " + textoCentavos + (centavos === 1 ? " centavo" : " centavos");
         }
 
-        campoExtenso = resultado.charAt(0).toUpperCase() + resultado.slice(1);
+        campoExtenso = resultado;
       } else {
         campoExtenso = "Zero reais";
       }
     } catch (e) {
-      console.error("Erro no processamento do extenso:", e);
+      console.error("Erro na conversão manual:", e);
       campoExtenso = campoNumero + " reais";
     }
 
